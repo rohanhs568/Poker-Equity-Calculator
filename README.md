@@ -9,6 +9,6 @@ Monte Carlo hand equity calculator. Input 2 hands and no of trials, returns no o
 
 ## Status
 
-Works for heads-up, all-in equity between two known hands. No range support yet, just fixed hand vs fixed hand.
+Works for heads-up, all-in equity between two known hands. No range support yet
 
-Built from scratch. More poker projects to come (in different repos)
+Follow up idea: Pricer for showing one hand in different setups.
