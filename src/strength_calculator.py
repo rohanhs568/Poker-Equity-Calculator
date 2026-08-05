@@ -1,14 +1,25 @@
 def base14(values):
-        if len(values) > 5:
-            raise ValueError("too many values")
+    if len(values) > 6:
+        raise ValueError("too many values")
 
-        pad_values = values + [0] * (5 - len(values))
+    pad_values = values + [0] * (6 - len(values))
 
-        base14_output = 0
-        for i in range(5):
-            base14_output += pad_values[i] * 14**(4 - i)    
+    base14_output = 0
+    for i in range(6):
+        base14_output += pad_values[i] * 14**(5 - i)  
 
-        return base14_output
+    return base14_output
+
+def get_kickers(rank_counter, exclude_ranks, n):
+    kickers = []
+    for r in range(12, -1, -1):
+        if r in exclude_ranks:
+            continue
+        if rank_counter[r] > 0:
+            kickers.append(r)
+        if len(kickers) == n:
+            break
+    return kickers
 
 def hand_strength_calculator(hand, community_cards):
 
@@ -44,7 +55,7 @@ def hand_strength_calculator(hand, community_cards):
                     break
 
             if found_straight_flush == False and flush_rank_counter[12] == flush_rank_counter[0] == flush_rank_counter[1] == flush_rank_counter[2] == flush_rank_counter[3] == 1:
-                strength = base14([9, 5])
+                strength = base14([9, 3])
                 found_straight_flush = True
 
         if flush_exists == True:
@@ -100,31 +111,36 @@ def hand_strength_calculator(hand, community_cards):
 
     if not found_straight_flush:
         if quads is not None:
-            strength = base14([8, quads])
+            kickers = get_kickers(rank_counter, {quads}, 1)
+            strength = base14([8, quads] + kickers)
 
         elif fullhouse_pair_component is not None:
-            strength = base14([7, highest_trips, fullhouse_pair_component])
+            strength = base14([7, highest_trips, fullhouse_pair_component]) 
 
         elif flush_exists == True:
-            flush_ranks = sorted([card[0] for card in flush], reverse=True)[:4]
+            flush_ranks = sorted([card[0] for card in flush], reverse=True)[:5]  # was [:4]
             strength = base14([6] + flush_ranks)
 
         elif straight_found == True:
-            strength = base14([5, straight_high])
+            strength = base14([5, straight_high])  
 
         elif wheel_found == True:
-            strength = base14([5, 5])
+            strength = base14([5, 3])  
 
         elif highest_trips is not None:
-            strength = base14([4, highest_trips])
+            kickers = get_kickers(rank_counter, {highest_trips}, 2)
+            strength = base14([4, highest_trips] + kickers)
 
         elif highest_pair is not None and second_highest_pair is not None:
-            strength = base14([3, highest_pair, second_highest_pair])
+            kickers = get_kickers(rank_counter, {highest_pair, second_highest_pair}, 1)
+            strength = base14([3, highest_pair, second_highest_pair] + kickers)
 
         elif highest_pair is not None:
-            strength = base14([2, highest_pair])
+            kickers = get_kickers(rank_counter, {highest_pair}, 3)
+            strength = base14([2, highest_pair] + kickers)
 
         else:
-            strength = base14([1])
+            kickers = get_kickers(rank_counter, set(), 5)
+            strength = base14([1] + kickers)
 
     return strength

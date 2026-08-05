@@ -37,7 +37,6 @@ def equity_calculator(hand1, hand2, no_of_trials):
 
     return hand1_wins, hand2_wins
 
-print(equity_calculator([(12,0), (12,1)], [(12,2),(12,3)], 1000000))
          
 
 

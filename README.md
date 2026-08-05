@@ -1,14 +1,11 @@
 # Poker Equity Calculator
 
-Monte Carlo hand equity calculator. Input 2 hands and no of trials, returns no of wins each.
+A simple equity calculator using Monte Carlo simulation to approximate preflop HU NLH equities.
 
-## How it works
+## Contents
 
-- **`strength_calculator.py`** evaluates a 7-card hand (2 hole cards + 5 board cards) and returns a single comparable number. Ranks are packed into one integer using base-14 encoding, so two hand strengths can just be compared with `>`.
-- **`equity_calculator.py`** runs the simulation. Deals random boards from the remaining deck, evaluates both hands each time using the module above, and tallies wins (splitting ties 0.5/0.5).
+'strength_calculator' returns a bit value of how strong a hand is. Can use the '>' operator to compare. Uses base 14.
+'equity_calculator' generates random boards from the remaining cards in the deck and tallies wins.
 
-## Status
-
-Works for heads-up, all-in equity between two known hands. No range support yet
-
-Follow up idea: Pricer for showing one hand in different setups.
+## Current w.i.p. 
+Generate exportable full table of equities.
